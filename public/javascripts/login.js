@@ -1,8 +1,6 @@
 "use strict";
-
-const $ = function(foo) {
-	return document.getElementById(foo);
-}
+import { $ } from "./modules/nQuery.js";
+import { Ajax } from "./modules/Ajax.js";
 
 const login = function() {
 	let login = $("login");

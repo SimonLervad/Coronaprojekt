@@ -5,10 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require("body-parser");              // added for POST data handling
 const session = require('express-session');          // favicon extra
-
 const indexRouter = require('./routes/index');          // router for basic routing file
 const usersRouter = require('./routes/users');          // router concerned with users routing file
-
 const app = express();
 app.locals.pretty = app.get('env') === 'development';   // pretty print html
 

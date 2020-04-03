@@ -3,8 +3,17 @@ var router = express.Router();
 const handler = require("../models/handler");
 const headTitle = "Todo list application";	//save keystrokes
 
+const redirectProfile = (req, res, next) => {
+	if (req.session.user.approved) {
+		res.redirect('/profile')
+	} else {
+		next()
+	}
+}
+
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', redirectProfile, function(req, res, next) {
+	console.log(req.session);
 	res.render('index', {
 		scriptLink:'/javascripts/login.js',
 		title: headTitle,
@@ -29,36 +38,64 @@ router.post('/registrate', async function(req, res, next) {
 
 router.post('/login', async function(req, res) {// new user post route
 	let rc = await handler.verifyUser(req); // verify credentials
-	console.log(rc);
 	console.log(req.session);
-	if (rc) { // if user exists
-		if (!req.session.user[0].approved) { // if user is approved by admin
-			res.render('unApproved', { // read unApproved content
-				title: headTitle,
-				who: "Hello " + req.session.user[0].firstName + " " + req.session.user[0].lastName,
-				subtitle: 'Your account has not yet been approved by admin',
-				loggedin: true,
-				user: req.session.user[0]
-			});
-		} else { // if user is approved by admin
-			res.render('profile', { // read approved content
-				title: headTitle,
-				subtitle: 'Welcome to todo App - start creating your list today',
-				loggedin: true,
-				who: "Hello " + req.session.user[0].firstName + " " + req.session.user[0].lastName,
-				user: req.session.user[0],
-				scriptLink: "/javascripts/profile.js"
-			});
-		}
+	if (rc) { // if user exists and is approved by admin
+		res.render('profile', { 
+			title: headTitle,
+			subtitle: 'Welcome to todo App - start creating your list today',
+			loggedin: true,
+			who: "Hello " + req.session.user.firstName + " " + req.session.user.lastName,
+			user: req.session.user,
+			scriptLink: "/javascripts/profile.js"
+		});
 	} else { // user not there
 		res.render('index', { // return to front page
 			scriptLink:'/javascripts/login.js',
 			title: headTitle,
 			subtitle: 'Login or registrate',
 			loggedin: false,
-			wrong:  'email or password is incorrect' 
+			wrong: req.session.wrong
 		});
 	}
+});
+
+router.get('/adminPanel', async function(req, res) {
+	console.log(req.session);
+	let state = req.session.user.admin;
+	if (state) {
+		res.render('adminPanel', {
+			scriptLink:'/javascripts/admin.js',
+			title: headTitle,
+			subtitle: 'Welcome to Admin Panel' 
+		});
+	} else {
+		res.render('adminPanel', {
+			scriptLink:'/javascripts/admin.js',
+			title: headTitle,
+			subtitle: 'Welcome to Admin Panel' 
+		});
+	}
+});
+
+// returns req.session as object via AJAX for admin user - gives who are admins acces to the admin panel
+router.get('/admin', async function(req, res, next) {
+    let session = req.session		// define session as variable
+    res.json(session);				// send variable as JSON object on request
+});
+
+
+// logout a user
+router.get('/logout', async function(req, res) { // request for logging out
+	delete req.session.wrong;	// remove message from object
+	req.session.authenticated = false; 		// set authenticated to false
+	delete req.session.user;		// delete the user information on req.session
+	res.render('index', { // return to front page
+		scriptLink:'/javascripts/login.js',
+		title: headTitle,
+		subtitle: 'You have been logged out - See you later',		// making sure they get the message
+		loggedin: false
+	});
+	console.log(req.session);		// display session object to show logout has been succesfull
 });
 
 module.exports = router;

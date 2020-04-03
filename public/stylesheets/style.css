@@ -27,7 +27,7 @@ nav {
 	left:0;
 	width:100%;
 	background-color:slategrey;
-	padding:50px 43px;
+	padding:50px 36px;
 }
 nav a {
 	color:lightgrey;
@@ -45,7 +45,7 @@ nav a:hover {color:#f2f2f2;}
 
 #form {
 	background-color:white;
-	width:35%;
+	width:30%;
 	margin:auto;
 	border:1px solid black;
 }
@@ -68,7 +68,7 @@ nav a:hover {color:#f2f2f2;}
 	color:grey;
 }
 #loginForm, #registrateForm {
-	min-height:400px;
+	min-height:500px;
 	padding:50px;
 }
 #registrate {background-color:#f2f2f2;}
@@ -86,4 +86,8 @@ nav a:hover {color:#f2f2f2;}
 	margin:auto;
 	padding:5px 10px;
 	text-align:center;
+}
+.nav-link {
+	display:flex;
+	flex-direction: row-reverse;
 }

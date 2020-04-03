@@ -36,16 +36,21 @@ exports.verifyUser = async function (req) {
     let check = { email: req.body.email }; 
     let u = await this.getUsers(check, {});     // returns user for requested email
     if (u.length === 0) {               // if no user found, return false - no need to try and match password none existing users
-        req.session = undefined;
+        req.session.wrong = "email or password is incorrect";
         return false
-    }
+    } 
     let success = await bcrypt.compare(req.body.password, u[0].password);   // matching passwords
-    if (success) {                              // defining usefull information for session object
-        req.session.authenticated = true;
-        req.session.user = u;                   // inserting user details as object   
+    if (success) {                            // defining usefull information for session object
+        if (!u[0].approved) {
+            req.session.wrong = "Your account has not yet been approved by admin";
+            return false
+        } else {
+            req.session.authenticated = true;
+            req.session.wrong = false;
+            req.session.user = u[0];                   // inserting user details as object 
+        }  
     } else {
-        req.session = undefined;
-        console.log("didnt log in");
+        req.session.wrong = "email or password is incorrect";
     }
     return success;     // return succes for match
 };
