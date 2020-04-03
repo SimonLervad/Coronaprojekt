@@ -1,0 +1,31 @@
+extends layout
+
+block content
+	div(style="margin-top:0;" class="wrapper")
+		h1= title
+		p= subtitle
+		div(id="form")
+			div(class="row")
+				div(id="login" class="formBut login") Login
+				div(id="registrate" class="formBut registrate") Registrate
+			div(id="loginForm")
+				h2 Login
+				form(method="POST" action="login")
+					label Email
+					input(type="text" name="email" placeholder="Email")
+					label Password
+					input(type="password" name="password" placeholder="********")
+					p= wrong
+					button(type="submit") Login
+			div(id="registrateForm") 
+				h2 Registrate
+				form(method="POST" action="registrate")
+					label Firstname
+					input(type="text" name="firstName" placeholder="Firstname")
+					label Lastname
+					input(type="text" name="lastName" placeholder="Lastname")
+					label Email
+					input(type="text" name="email" placeholder="Email")
+					label Password
+					input(type="password" name="password" placeholder="********")
+					button(type="submit") Registrate

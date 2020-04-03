@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	div(class="wrapper")
+		h1= who
+		p= subtitle
+	nav
+		div(class="row")
+			div
+				a(href="/createTodo") Create a Todo
+				a(href="/readTodo") See your list
+			div
+				a(href="/editprofile") Profile
+				a(href="/logout") Logout

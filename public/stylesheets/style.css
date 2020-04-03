@@ -1,0 +1,89 @@
+* {
+	box-sizing: border-box;
+}
+body {
+	background-color:#f2f2f2;
+	margin:0;
+	padding:0;
+}
+h1, h2, h3, h4 {
+	color:#232323;
+	font-family:arial;
+	font-weight:900;
+	text-transform: uppercase;
+}
+p, label, pre, div {
+	color:darkgrey;
+	font-family:times new roman;
+	font-weight:500;
+}
+a, button {
+	text-decoration: none;
+	text-transform: uppercase;
+}
+nav {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	background-color:slategrey;
+	padding:50px 43px;
+}
+nav a {
+	color:lightgrey;
+	padding:7px 16px;
+}
+nav a:hover {color:#f2f2f2;}
+.wrapper {
+	position:relative;
+	top:0;
+	left:0;
+	width:100%;
+	margin-top:100px;
+	padding:50px;
+}
+
+#form {
+	background-color:white;
+	width:35%;
+	margin:auto;
+	border:1px solid black;
+}
+.row {
+	display:flex;
+	justify-content: space-between;
+}
+.formBut {
+	background-color:white;
+	display:block;
+	width:50%;
+	text-align:center;
+	padding:20px;
+	color:black;
+	cursor: pointer;
+}
+.registrate {
+	border-bottom:1px solid black;
+	border-left:1px solid black;
+	color:grey;
+}
+#loginForm, #registrateForm {
+	min-height:400px;
+	padding:50px;
+}
+#registrate {background-color:#f2f2f2;}
+#registrateForm {display:none;}
+#form input {
+	width:100%;
+	padding:2px 6px;
+	font-size:16px;
+	margin:5px 0;
+	margin-bottom:15px;
+}
+#form button {
+	display:block;
+	width:50%;
+	margin:auto;
+	padding:5px 10px;
+	text-align:center;
+}
