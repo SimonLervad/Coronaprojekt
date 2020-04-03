@@ -4,11 +4,23 @@ const handler = require("../models/handler");
 const headTitle = "Todo list application";	//save keystrokes
 
 const redirectProfile = (req, res, next) => {
-	if (req.session.user.approved) {
-		res.redirect('/profile')
-	} else {
-		next()
-	}
+	try { 
+    	req.session.user.approved.prop;
+	    res.redirect('/profile');
+	} 
+	catch {
+	  	next();
+	} 
+}
+
+const redirectIndex = (req, res, next) => {
+	try { 
+    	req.session.user.approved.prop;
+	    next();
+	} 
+	catch {
+	  	res.redirect('/');
+	} 
 }
 
 /* GET home page. */
@@ -21,8 +33,20 @@ router.get('/', redirectProfile, function(req, res, next) {
 	});
 });
 
+router.get('/profile', redirectIndex, function(req, res, next) {
+	console.log(req.session);
+	res.render('profile', { 
+		title: headTitle,
+		subtitle: 'Welcome to todo App - start creating your list today',
+		loggedin: true,
+		who: "Hello " + req.session.user.firstName + " " + req.session.user.lastName,
+		user: req.session.user,
+		scriptLink: "/javascripts/profile.js"
+	});
+});
+
 // add new user - waiting for confirmation from admin user
-router.post('/registrate', async function(req, res, next) {
+router.post('/registrate', redirectProfile, async function(req, res, next) {
     let user = handler.upsertUser(req);
     userMsg = `
     	You account has succesfully been created. You have not yet been approved.. \
@@ -55,24 +79,6 @@ router.post('/login', async function(req, res) {// new user post route
 			subtitle: 'Login or registrate',
 			loggedin: false,
 			wrong: req.session.wrong
-		});
-	}
-});
-
-router.get('/adminPanel', async function(req, res) {
-	console.log(req.session);
-	let state = req.session.user.admin;
-	if (state) {
-		res.render('adminPanel', {
-			scriptLink:'/javascripts/admin.js',
-			title: headTitle,
-			subtitle: 'Welcome to Admin Panel' 
-		});
-	} else {
-		res.render('adminPanel', {
-			scriptLink:'/javascripts/admin.js',
-			title: headTitle,
-			subtitle: 'Welcome to Admin Panel' 
 		});
 	}
 });
