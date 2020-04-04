@@ -6,8 +6,9 @@ const saltTurns = 10;
 const dbServer = "localhost";
 const dbName = "todoApp";
 
-exports.upsertUser = async function (req) {
-    let check = { email: req.body.email };
+exports.upsertUser = async function (req) {     //create
+    let check = {email: req.body.email};
+    console.log(req.body);
     let user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -22,7 +23,18 @@ exports.upsertUser = async function (req) {
     }
 };
 
-exports.getUsers = async function(query, sort) {
+exports.updateUserState = async function (req) {     //update state
+    let check = {email: req.body.email};
+    let user = new User({approved: req.body.approved});
+    try {
+        let cs = await mon.upsert(dbServer, dbName, User, user, check);
+        return
+    } catch(e) {
+        console.error(e);
+    }
+};
+
+exports.getUsers = async function(query, sort) {        //read
     try {
         let cs = await mon.retrieve(dbServer, dbName, User, query, {});     // return requested user
         return cs;
@@ -31,6 +43,14 @@ exports.getUsers = async function(query, sort) {
     }
 };
 
+exports.delete = async function (collection, name) {
+    try {
+        let cs = await mon.remove(dbServer, dbName, collection, name);
+        return cs;
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 exports.verifyUser = async function (req) {
     let check = { email: req.body.email }; 

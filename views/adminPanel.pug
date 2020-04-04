@@ -1,0 +1,45 @@
+extends layout
+
+block content
+	include nav.pug
+	div(class="wrapper")
+		h1= subtitle
+		table
+			tr
+				th
+					p Username
+				th
+					p Email
+				th 
+					p isAdmin
+				th
+					p isApproved
+				th
+					p Delete user
+				each user in users
+					// if user._id != who._id
+					tr
+						td
+							p= user.firstName + " " + user.lastName
+						td
+							p= user.email
+						td
+							if user.admin === true
+								p= user.admin
+							else
+								form(action="/makeAdmin" method="post")
+									input(name="admin" value="true" hidden="hidden")
+									input(name="email" value=`${user.email}` hidden="hidden")
+									input(type="submit" value="Make user Admin")
+						td
+							if user.approved === true
+								p= user.approved
+							else
+								form(action="/users/approve" method="post")
+									input(name="approved" value="true" hidden="hidden")
+									input(name="email" value=`${user.email}` hidden="hidden")
+									input(type="submit" value="Approve user")
+						td(class="delete")
+							form(action="/users/delete" method="post")
+								input(name="userid" value=`${user._id}` hidden="hidden")
+								input(type="submit" value="X")

@@ -16,7 +16,7 @@ const showAdmin = function (e) {
     console.log(session.user.admin);
     if (session.user.admin) {
     	let link = document.createElement("A");
-    	link.setAttribute("href", "/adminPanel");
+    	link.setAttribute("href", "/users/adminPanel");
     	link.innerHTML = "admin panel";
     	menu.appendChild(link);
     }

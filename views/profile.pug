@@ -4,11 +4,4 @@ block content
 	div(class="wrapper")
 		h1= who
 		p= subtitle
-	nav(id="nav")
-		div(class="row")
-			div(id="user-links" class="nav-link")
-				a(href="/createTodo") Create a Todo
-				a(href="/readTodo") See your list
-			div(id="profile-menu" class="nav-link")
-				a(href="/logout") Logout
-				a(href="/editprofile") Profile
+	include nav.pug

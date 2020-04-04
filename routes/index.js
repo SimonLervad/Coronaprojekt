@@ -5,37 +5,37 @@ const headTitle = "Todo list application";	//save keystrokes
 
 const redirectProfile = (req, res, next) => {
 	try { 
-    	req.session.user.approved.prop;
-	    res.redirect('/profile');
+    	req.session.user.approved.prop;		// tels me weather a user is approved or not
+	    res.redirect('/profile');			// if user is approved, redirect them to profile page
 	} 
 	catch {
-	  	next();
+	  	next();								// if user is not approved, or none existing. continue function
 	} 
 }
 
 const redirectIndex = (req, res, next) => {
 	try { 
-    	req.session.user.approved.prop;
-	    next();
+    	req.session.user.approved.prop;		// tels me weather a user is approved or not
+	    next();								// if user is approved, continue function
 	} 
 	catch {
-	  	res.redirect('/');
+	  	res.redirect('/');					// if user is not approved, or none existing. Redirect to index page
 	} 
 }
 
 /* GET home page. */
-router.get('/', redirectProfile, function(req, res, next) {
-	console.log(req.session);
-	res.render('index', {
+router.get('/', redirectProfile, function(req, res, next) {	// reads front page - If user is logged in, redirct to profile page
+	console.log(req.session);	// logs the session for user, should be empty at all times when on index
+	res.render('index', {		// render index page
 		scriptLink:'/javascripts/login.js',
 		title: headTitle,
 		subtitle: 'Login or registrate' 
 	});
 });
 
-router.get('/profile', redirectIndex, function(req, res, next) {
-	console.log(req.session);
-	res.render('profile', { 
+router.get('/profile', redirectIndex, function(req, res, next) {	// reads profile pages, and checks if user is logged in
+	console.log(req.session);	// Log session for user
+	res.render('profile', { 	// render profile page with user information
 		title: headTitle,
 		subtitle: 'Welcome to todo App - start creating your list today',
 		loggedin: true,
@@ -47,20 +47,19 @@ router.get('/profile', redirectIndex, function(req, res, next) {
 
 // add new user - waiting for confirmation from admin user
 router.post('/registrate', redirectProfile, async function(req, res, next) {
-    let user = handler.upsertUser(req);
-    userMsg = `
+    let user = handler.upsertUser(req); // creates new user with requested data
+    userMsg = ` 
     	You account has succesfully been created. You have not yet been approved.. \
     	You can still login to your account, but will be denied acces before approved by admin.
-    `
-    console.log(req.session);
-    console.log(req.body.firstName);
-    res.render('index', { 
+    `	// tells the use weather is succeded or not
+    console.log(req.session);	// logs new user
+    res.render('index', {  // direct them back to index, untill they are approved
 		title: headTitle,
 		subtitle: 'Hello ' + req.body.firstName + " " + req.body.lastName + userMsg
 	});
 });
 
-router.post('/login', async function(req, res) {// new user post route
+router.post('/login', redirectProfile, async function(req, res) {// new user post route
 	let rc = await handler.verifyUser(req); // verify credentials
 	console.log(req.session);
 	if (rc) { // if user exists and is approved by admin
@@ -84,14 +83,14 @@ router.post('/login', async function(req, res) {// new user post route
 });
 
 // returns req.session as object via AJAX for admin user - gives who are admins acces to the admin panel
-router.get('/admin', async function(req, res, next) {
+router.get('/admin', redirectIndex, async function(req, res, next) {
     let session = req.session		// define session as variable
     res.json(session);				// send variable as JSON object on request
 });
 
 
 // logout a user
-router.get('/logout', async function(req, res) { // request for logging out
+router.get('/logout', redirectIndex, async function(req, res) { // request for logging out
 	delete req.session.wrong;	// remove message from object
 	req.session.authenticated = false; 		// set authenticated to false
 	delete req.session.user;		// delete the user information on req.session
@@ -103,5 +102,19 @@ router.get('/logout', async function(req, res) { // request for logging out
 	});
 	console.log(req.session);		// display session object to show logout has been succesfull
 });
+
+
+
+/*
+
+	*
+	* This was the end of all session routing
+	* All above routes, gives user acced to login/logout, register, profile page and front page. 
+	* All remaining routes is for users, and will be fount in users.js
+	*
+
+*/
+
+
 
 module.exports = router;
