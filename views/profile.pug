@@ -46,11 +46,9 @@ block content
 										p Very low
 								td
 									form(action="/users/complete" method="post")
-										label= job.complete
 										input(name="userid" value=`${job._id}` hidden="hidden")
 										button(type="submit") &#10004;
 								td
 									form(action="/users/deleteTodo" method="post")
-										label= job.concede
 										input(name="userid" value=`${job._id}` hidden="hidden")
 										input(type="submit" value="X")

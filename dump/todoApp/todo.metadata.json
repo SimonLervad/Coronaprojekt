@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"todoApp.todo"}],"uuid":"4606244db04b413db8900c3503a0716f"}
