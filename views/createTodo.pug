@@ -1,0 +1,18 @@
+extends layout
+
+block content
+	include nav.pug
+	div(class="wrapper")
+		h1= who
+		p= subtitle
+		form(id="formCreate" action="/users/createTodo" method="post")
+			input(name="title" type="text" placeholder="Title")
+			textarea(name="content" type="text" placeholder="Write something todo....")
+			label Start date og todo
+			input(id="startDate" name="startDate" type="date" min="2020-01-01")
+			label Deadline date
+			input(id="deadline" name="deadline" type="date")
+			label Choose priority: 
+			label(id="priority") Normal
+			input(type="range" name="priority" value="3" min="1" max="5")
+			input(type="submit" value="Create Todo")

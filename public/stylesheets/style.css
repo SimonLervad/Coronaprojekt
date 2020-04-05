@@ -107,3 +107,41 @@ tr:nth-child(odd) {
 table th p {color:#232323;}
 table td p {color:grey;}
 .delete {text-align:center;}
+.green-light {
+	background-color:green;
+	border:none;
+	padding:5px 10px;
+	color:white;
+	cursor: pointer;
+}
+.red-light {
+	background-color:red;
+	color:white;
+	border:none;
+	padding:5px 10px;
+	cursor: pointer;
+}
+#formCreate {
+	padding:0;
+	display:block;
+	min-width:300px;
+	max-width:600px;
+}
+#formCreate input {
+	width:100%;
+	margin:15px 0;
+	padding:5px 10px;
+	display:block;
+	font-size:16px;
+}
+#formCreate input:nth-child(1) {font-size:20px;}
+#formCreate textarea {
+	min-height:100px;
+	max-height:300px;
+	min-width:100%;
+	max-width:100%;
+	margin:15px 0;
+	padding:5px 10px;
+	font-size:14px;
+	display:block;
+}

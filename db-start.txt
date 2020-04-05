@@ -1,2 +1,0 @@
-db.user.insert( [ { "firstName": "John", "lastName": "Doe", "Email": "john@doe.dk", "password": "$2a$10$E4e92HtFeJFPYXiyu9FLsuujp8PMb8uAL2gCJQZl2FZX.Kj4q8WjO", "approved": "true", "admin": "true", "created" : ISODate("2020-04-02T15:01:42.645Z")  } ] )
-mongorestore -d todoApp --drop dump/todoApp

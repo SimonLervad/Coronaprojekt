@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const todoSchema = mongoose.Schema({
+    user: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
@@ -20,7 +24,7 @@ const todoSchema = mongoose.Schema({
     },
     priority: {
         type: Number,
-        default: 2,
+        default: 3,
         required: true
     },
     complete: {
@@ -30,6 +34,10 @@ const todoSchema = mongoose.Schema({
     concede: {
         type: Boolean,
         default: false
+    },
+    completeDate: {
+        type: Date,
+        default: Date.now
     }
 });
 

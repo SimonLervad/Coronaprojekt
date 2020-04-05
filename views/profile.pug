@@ -1,7 +1,56 @@
 extends layout
 
 block content
+	include nav.pug
 	div(class="wrapper")
 		h1= who
 		p= subtitle
-	include nav.pug
+		div
+			table(id="todoApp")
+				tr
+					th
+						p Title
+					th
+						p Content
+					th
+						p Start Date
+					th
+						p Deadline
+					th
+						p Priority
+					th
+						p Complete task
+					th
+						p Forfeit/ delete task
+					each job in todo
+						if (!job.complete & !job.concede)
+							tr
+								td
+									p= job.title
+								td
+									p= job.content
+								td
+									p(id=`startDate${job._id}`)
+								td
+									p(id=`deadline${job._id}`)
+								td
+									if job.priority === 5
+										p Very high
+									else if job.priority === 4
+										p High
+									else if job.priority === 3
+										p Normal
+									else if job.priority === 2
+										p Low
+									else if job.priority === 1
+										p Very low
+								td
+									form(action="/users/complete" method="post")
+										label= job.complete
+										input(name="userid" value=`${job._id}` hidden="hidden")
+										button(type="submit") &#10004;
+								td
+									form(action="/users/deleteTodo" method="post")
+										label= job.concede
+										input(name="userid" value=`${job._id}` hidden="hidden")
+										input(type="submit" value="X")

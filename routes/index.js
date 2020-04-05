@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+const User = require("../models/User");
+const Todo = require("../models/Todo");
 const handler = require("../models/handler");
 const headTitle = "Todo list application";	//save keystrokes
 
@@ -33,7 +35,8 @@ router.get('/', redirectProfile, function(req, res, next) {	// reads front page 
 	});
 });
 
-router.get('/profile', redirectIndex, function(req, res, next) {	// reads profile pages, and checks if user is logged in
+router.get('/profile', redirectIndex, async function(req, res, next) {	// reads profile pages, and checks if user is logged in
+	let todo = await handler.read(Todo, {user: req.session.user._id}, {sort: {priority: -1}});
 	console.log(req.session);	// Log session for user
 	res.render('profile', { 	// render profile page with user information
 		title: headTitle,
@@ -41,7 +44,8 @@ router.get('/profile', redirectIndex, function(req, res, next) {	// reads profil
 		loggedin: true,
 		who: "Hello " + req.session.user.firstName + " " + req.session.user.lastName,
 		user: req.session.user,
-		scriptLink: "/javascripts/profile.js"
+		scriptLink: "/javascripts/profile.js",
+		todo: todo
 	});
 });
 
@@ -63,13 +67,15 @@ router.post('/login', redirectProfile, async function(req, res) {// new user pos
 	let rc = await handler.verifyUser(req); // verify credentials
 	console.log(req.session);
 	if (rc) { // if user exists and is approved by admin
+		let todo = await handler.read(Todo, {user: req.session.user._id}, {sort: {priority: -1}});
 		res.render('profile', { 
 			title: headTitle,
 			subtitle: 'Welcome to todo App - start creating your list today',
 			loggedin: true,
 			who: "Hello " + req.session.user.firstName + " " + req.session.user.lastName,
 			user: req.session.user,
-			scriptLink: "/javascripts/profile.js"
+			scriptLink: "/javascripts/profile.js",
+			todo: todo
 		});
 	} else { // user not there
 		res.render('index', { // return to front page
